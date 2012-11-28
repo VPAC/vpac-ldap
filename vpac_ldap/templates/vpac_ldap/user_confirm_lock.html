@@ -1,0 +1,14 @@
+{% extends "placard/user_confirm_lock.html" %}
+
+{% block confirm-details %}
+<p>This operation will:</p>
+
+<ul>
+<li>Change the user's shell to an invalid value.</li>
+<li>Set eduPersonAffiliation to 'affiliate'.</li>
+<li>Lock the user's password.</li>
+<li>Lock the user's Samba account.</li>
+<li>Set the user's primary group to visitors.</li>
+<li>Remove the user's secondary groups.</li>
+</ul>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "placard/user_confirm_unlock.html" %}
+
+{% block confirm-details %}
+<p>This operation will:</p>
+
+<ul>
+<li>Restore the user's shell.</li>
+<li>Set eduPersonAffiliation to 'staff'.</li>
+<li>Unlock the user's password.</li>
+<li>Unlock the user's Samba account</li>
+<li>Not restore the user's primary group.</li>
+<li>Not restore the the user's secondary groups.</li>
+</ul>
+{% endblock %}

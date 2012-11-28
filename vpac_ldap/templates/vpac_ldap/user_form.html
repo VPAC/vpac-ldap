@@ -1,0 +1,26 @@
+{% extends "placard/user_form.html" %}
+
+
+{% block form-fields %}
+{% load placard_tags %}
+{{ form.non_field_errors }}
+{% if not luser %}
+{% formfield form.uid %}
+{% formfield form.force %}
+{% formfield form.raw_password %}
+{% formfield form.raw_password2 %}
+{% endif %}
+{% inlineformfield form.givenName form.sn %}
+{% formfield form.eduPersonAffiliation %}
+{% formfield form.primary_group %}
+{% formfield form.title %}
+{% formfield form.description %}
+
+{% inlineformfield form.telephoneNumber form.facsimileTelephoneNumber %}
+{% formfield form.mobile %}
+{% formfield form.managed_by %}
+{% formfield form.l %}
+{% formfield form.jpegPhoto %}
+{% formfield form.sshPublicKey %}
+{% formfield form.loginShell %}
+{% endblock %}
