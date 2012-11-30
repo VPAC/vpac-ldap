@@ -15,10 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with django-placard  If not, see <http://www.gnu.org/licenses/>.
 
-from tldap.schemas import rfc, ad
+from tldap.schemas import rfc, ad, samba, eduroam, other
 from placard.schemas import common
 from placard.schemas.pwdpolicy import pwdPolicyMixin
 from placard.schemas.ad import adUserMixin, adGroupMixin
+from placard.schemas.samba import sambaAccountMixin, sambaGroupMixin
+from placard.schemas.shibboleth import shibbolethMixin
 import tldap.manager
 
 #######
@@ -41,6 +43,9 @@ class localRfcAccountMixin(object):
 class rfc_account(
         rfc.person, rfc.organizationalPerson, rfc.inetOrgPerson, rfc.pwdPolicy,
         rfc.posixAccount, rfc.shadowAccount,
+        samba.sambaSamAccount, sambaAccountMixin,
+        eduroam.eduPerson, eduroam.auEduPerson, shibbolethMixin,
+        other.ldapPublicKey,
         common.baseMixin):
     mixin_list = [ common.personMixin, pwdPolicyMixin, common.accountMixin, localRfcAccountMixin ]
 
