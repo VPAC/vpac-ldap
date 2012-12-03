@@ -29,14 +29,14 @@ AFFILIATIONS = (
 )
 
 
-class LDAPUserForm(placard.forms.LDAPUserForm):
+class LDAPAccountForm(placard.forms.LDAPAccountForm):
     eduPersonAffiliation = forms.ChoiceField(label="Affiliation", choices=AFFILIATIONS, initial='staff')
     sshPublicKey = fields.CharField(label="SSH pub-key", required=False, widget=forms.Textarea(attrs={'class':'vLargeTextField', 'rows':10, 'cols':40 }))
 
     primary_groups = { 'systems', 'cs', 'cas', 'visitor', 'summer' }
 
 
-class LDAPAddUserForm(placard.forms.LDAPAddUserForm):
+class LDAPAddAccountForm(placard.forms.LDAPAddAccountForm):
     eduPersonAffiliation = forms.ChoiceField(label="Affiliation", choices=AFFILIATIONS, initial='staff')
     sshPublicKey = fields.CharField(label="SSH pub-key", required=False, widget=forms.Textarea(attrs={'class':'vLargeTextField', 'rows':10, 'cols':40 }))
     force = forms.BooleanField(label='Cluster user exists', required=False)
@@ -44,7 +44,7 @@ class LDAPAddUserForm(placard.forms.LDAPAddUserForm):
     primary_groups = { 'systems', 'cs', 'cas', 'visitor', 'summer' }
 
     def clean_uid(self):
-        username = super(LDAPAddUserForm, self).clean_uid()
+        username = super(LDAPAddAccountForm, self).clean_uid()
 
         if 'force' not in self.cleaned_data:
             import xmlrpclib

@@ -22,7 +22,7 @@ import vpac_ldap.views
 
 import placard.views as views
 import placard.logging.views
-import placard.user_urls
+import placard.account_urls
 import placard.group_urls
 
 import ajax_select.urls
@@ -35,23 +35,23 @@ urlpatterns = patterns('',
     url(r'^lookup/', include(ajax_select.urls)),
 
     url(r'^search/$', views.search, name='plac_search'),
-    url(r'^change_password/$', views.UserChangePassword.as_view(), name='plac_user_password'),
+    url(r'^change_password/$', views.UserChangePassword.as_view(), name='plac_account_password'),
 
     url(r'^logs/$', placard.logging.views.LogView.as_view(), name='plac_log'),
     url(r'^logs/(?P<user>[-.\w]+)/$', placard.logging.views.LogView.as_view(), name='plac_log_user'),
 
-    url(r'^users/$', vpac_ldap.views.AccountList.as_view(), name='plac_user_list'),
-    url(r'^users/left/$', vpac_ldap.views.LeftAccountList.as_view(), name='plac_user_gone_list'),
-    url(r'^users/add/$', vpac_ldap.views.AccountAdd.as_view(), name='plac_user_add'),
-    url(r'^users/pdf/$', vpac_ldap.views.PdfAccountList.as_view(), name='plac_user_list_pdf'),
-    url(r'^users/(?P<username>[-.\w\$]+)/$', vpac_ldap.views.AccountDetail.as_view(), name='plac_user_detail'),
-    url(r'^users/(?P<username>[-.\w\$]+)/logs/$', placard.logging.views.LogView.as_view(), name='plac_user_log'),
-    url(r'^users/(?P<username>[-.\w\$]+)/edit/$', vpac_ldap.views.AccountEdit.as_view(), name='plac_user_edit'),
-    url(r'^users/(?P<username>[-.\w\$]+)/lock/$', vpac_ldap.views.AccountLock.as_view(), name='plac_user_lock'),
-    url(r'^users/(?P<username>[-.\w\$]+)/unlock/$', vpac_ldap.views.AccountUnlock.as_view(), name='plac_user_unlock'),
-    url(r'^users/', include(placard.user_urls)),
+    url(r'^users/$', vpac_ldap.views.AccountList.as_view(), name='plac_account_list'),
+    url(r'^users/left/$', vpac_ldap.views.LeftAccountList.as_view(), name='plac_account_gone_list'),
+    url(r'^users/add/$', vpac_ldap.views.AccountAdd.as_view(), name='plac_account_add'),
+    url(r'^users/pdf/$', vpac_ldap.views.PdfAccountList.as_view(), name='plac_account_list_pdf'),
+    url(r'^users/(?P<account>[-.\w\$]+)/$', vpac_ldap.views.AccountDetail.as_view(), name='plac_account_detail'),
+    url(r'^users/(?P<account>[-.\w\$]+)/logs/$', placard.logging.views.LogView.as_view(), name='plac_account_log'),
+    url(r'^users/(?P<account>[-.\w\$]+)/edit/$', vpac_ldap.views.AccountEdit.as_view(), name='plac_account_edit'),
+    url(r'^users/(?P<account>[-.\w\$]+)/lock/$', vpac_ldap.views.AccountLock.as_view(), name='plac_account_lock'),
+    url(r'^users/(?P<account>[-.\w\$]+)/unlock/$', vpac_ldap.views.AccountUnlock.as_view(), name='plac_account_unlock'),
+    url(r'^users/', include(placard.account_urls)),
 
-    url(r'^groups/(?P<group>[-.\w ]+)/$', vpac_ldap.views.GroupDetail.as_view(), name='plac_grp_detail'),
-    url(r'^groups/(?P<group>[-.\w ]+)/logs/$', placard.logging.views.LogView.as_view(), name='plac_grp_log'),
+    url(r'^groups/(?P<group>[-.\w ]+)/$', vpac_ldap.views.GroupDetail.as_view(), name='plac_group_detail'),
+    url(r'^groups/(?P<group>[-.\w ]+)/logs/$', placard.logging.views.LogView.as_view(), name='plac_group_log'),
     url(r'^groups/', include(placard.group_urls)),
 )

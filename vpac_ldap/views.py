@@ -45,23 +45,23 @@ class LeftAccountList(placard.views.AccountList):
         return qs.filter(~tldap.Q(eduPersonAffiliation='staff'))
 
 class AccountDetail(placard.views.AccountDetail):
-    template_name = "vpac_ldap/user_detail.html"
+    template_name = "vpac_ldap/account_detail.html"
 
 class AccountAdd(placard.views.AccountAdd):
-    form_class = vpac_ldap.forms.LDAPAddUserForm
-    template_name = "vpac_ldap/user_form.html"
+    form_class = vpac_ldap.forms.LDAPAddAccountForm
+    template_name = "vpac_ldap/account_form.html"
 
 class AccountEdit(placard.views.AccountEdit):
-    template_name = "vpac_ldap/user_form.html"
+    template_name = "vpac_ldap/account_form.html"
 
     def get_admin_form_class(self):
-        return vpac_ldap.forms.LDAPUserForm
+        return vpac_ldap.forms.LDAPAccountForm
 
 class AccountLock(placard.views.AccountLock):
-    template_name = "vpac_ldap/user_confirm_lock.html"
+    template_name = "vpac_ldap/account_confirm_lock.html"
 
 class AccountUnlock(placard.views.AccountUnlock):
-    template_name = "vpac_ldap/user_confirm_unlock.html"
+    template_name = "vpac_ldap/account_confirm_unlock.html"
 
 class GroupDetail(placard.views.GroupDetail):
     template_name = "vpac_ldap/group_detail.html"

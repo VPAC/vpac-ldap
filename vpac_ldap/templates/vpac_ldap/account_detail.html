@@ -1,0 +1,5 @@
+{% extends "placard/account_detail.html" %}
+
+{% block object-tools-view %}
+<li><a href="{% url plac_account_log account.uid %}">History</a></li>
+{% endblock %}

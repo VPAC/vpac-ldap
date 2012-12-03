@@ -1,10 +1,10 @@
-{% extends "placard/user_form.html" %}
+{% extends "placard/account_form.html" %}
 
 
 {% block form-fields %}
 {% load placard_tags %}
 {{ form.non_field_errors }}
-{% if not luser %}
+{% if not account %}
 {% formfield form.uid %}
 {% formfield form.force %}
 {% formfield form.raw_password %}
