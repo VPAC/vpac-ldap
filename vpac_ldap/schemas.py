@@ -55,8 +55,8 @@ class rfc_account(
         search_classes = set([ 'posixAccount' ])
         pk = 'uid'
 
-    managed_by = tldap.manager.ManyToOneDescriptor('manager', 'demo.schemas.rfc_account', 'dn')
-    manager_of = tldap.manager.OneToManyDescriptor('dn', 'demo.schemas.rfc_account', 'manager')
+    managed_by = tldap.manager.ManyToOneDescriptor('manager', 'vpac_ldap.schemas.rfc_account', 'dn')
+    manager_of = tldap.manager.OneToManyDescriptor('dn', 'vpac_ldap.schemas.rfc_account', 'manager')
     unixHomeDirectory = tldap.manager.AliasDescriptor("homeDirectory")
 
 
@@ -103,8 +103,8 @@ class ad_account(
         search_classes = set([ 'user' ])
         pk = 'cn'
 
-    managed_by = tldap.manager.ManyToOneDescriptor('manager', 'demo.schemas.ad_account', 'dn')
-    manager_of = tldap.manager.OneToManyDescriptor('dn', 'demo.schemas.ad_account', 'manager')
+    managed_by = tldap.manager.ManyToOneDescriptor('manager', 'vpac_ldap.schemas.ad_account', 'dn')
+    manager_of = tldap.manager.OneToManyDescriptor('dn', 'vpac_ldap.schemas.ad_account', 'manager')
 
 
 class ad_group(rfc.posixGroup, ad.group, common.baseMixin):
