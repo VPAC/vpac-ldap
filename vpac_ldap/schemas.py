@@ -29,25 +29,25 @@ import tldap.manager
 
 class localRfcAccountMixin(object):
     @classmethod
-    def set_defaults(self):
-        self.secondary_groups.add(rfc_group.objects.get(cn="vpac"))
+    def set_defaults(cls, self):
         self.o = 'VPAC'
 
     @classmethod
-    def save_defaults(cls, self):
+    def prepare_for_save(cls, self):
         if self.cn is None:
             self.cn = '%s %s' % (self.givenName, self.sn)
         self.mail = '%s@vpac.org' % self.uid
+        self.secondary_groups.add(rfc_group.objects.get(cn="vpac"))
+        self.secondary_groups.add(rfc_group.objects.get(cn="Domain Users"))
 
 
 class rfc_account(
         rfc.person, rfc.organizationalPerson, rfc.inetOrgPerson, rfc.pwdPolicy,
-        rfc.posixAccount, rfc.shadowAccount,
-        samba.sambaSamAccount, sambaAccountMixin,
-        eduroam.eduPerson, eduroam.auEduPerson, shibbolethMixin,
+        rfc.posixAccount, rfc.shadowAccount, samba.sambaSamAccount,
+        eduroam.eduPerson, eduroam.auEduPerson,
         other.ldapPublicKey,
         common.baseMixin):
-    mixin_list = [ common.personMixin, pwdPolicyMixin, common.accountMixin, localRfcAccountMixin ]
+    mixin_list = [ common.personMixin, pwdPolicyMixin, common.accountMixin, sambaAccountMixin, shibbolethMixin, localRfcAccountMixin, ]
 
     class Meta:
         base_dn_setting = "LDAP_ACCOUNT_BASE"
@@ -79,22 +79,23 @@ class rfc_group(rfc.posixGroup, common.baseMixin):
 
 class localAdAccountMixin(object):
     @classmethod
-    def set_defaults(self):
-        self.secondary_groups.add(ad_group.objects.get(cn="vpac"))
+    def set_defaults(cls, self):
         self.o = 'VPAC'
 
     @classmethod
-    def save_defaults(cls, self):
+    def prepare_for_save(cls, self):
         if self.cn is None:
             self.cn = self.uid
         self.mail = '%s@vpac.org' % self.uid
+        self.secondary_groups.add(ad_group.objects.get(cn="vpac"))
+        self.secondary_groups.add(group.objects.get(cn="Domain Users"))
 
 
 class ad_account(
         ad.person, rfc.organizationalPerson, rfc.inetOrgPerson, ad.user,
         ad.posixAccount,
         common.baseMixin):
-    mixin_list = [ common.personMixin, adUserMixin, common.accountMixin, localAdAccountMixin ]
+    mixin_list = [ common.personMixin, common.accountMixin, adUserMixin, localAdAccountMixin ]
 
     class Meta:
         base_dn_setting = "LDAP_ACCOUNT_BASE"
