@@ -25,23 +25,30 @@ import tldap.manager
 
 import django.conf
 
+class localAccountMixin(object):
+    @classmethod
+    def set_defaults(cls, self):
+        self.o = 'VPAC'
+
+    @classmethod
+    def pre_save(cls, self, created, using):
+        if self.uid != None:
+            if self.cn is None:
+                self.cn = '%s %s' % (self.givenName, self.sn)
+            self.mail = '%s@vpac.org' % self.uid
+
+
 #######
 # rfc #
 #######
 
 class localRfcAccountMixin(object):
     @classmethod
-    def set_defaults(cls, self):
-        self.o = 'VPAC'
-
-    @classmethod
-    def prepare_for_save(cls, self, using):
-        if self.uid != None:
-            if self.cn is None:
-                self.cn = '%s %s' % (self.givenName, self.sn)
-            self.mail = '%s@vpac.org' % self.uid
-        self.secondary_groups.add(rfc_group.objects.using(using).get(cn="vpac"))
-        self.secondary_groups.add(rfc_group.objects.using(using).get(cn="Domain Users"))
+    def pre_save(cls, self, created, using):
+        # only add groups on the first save when creating object
+        if created:
+            self.secondary_groups.add(rfc_group.objects.using(using).get(cn="vpac"))
+            self.secondary_groups.add(rfc_group.objects.using(using).get(cn="Domain Users"))
 
 
 class rfc_account(
@@ -50,7 +57,7 @@ class rfc_account(
         eduroam.eduPerson, eduroam.auEduPerson,
         other.ldapPublicKey,
         common.baseMixin):
-    mixin_list = [ common.personMixin, pwdPolicyMixin, common.accountMixin, sambaAccountMixin, shibbolethMixin, localRfcAccountMixin, ]
+    mixin_list = [ common.personMixin, pwdPolicyMixin, common.accountMixin, sambaAccountMixin, shibbolethMixin, localAccountMixin, localRfcAccountMixin, ]
 
     class Meta:
         base_dn_setting = "LDAP_ACCOUNT_BASE"
@@ -82,24 +89,18 @@ class rfc_group(rfc.posixGroup, samba.sambaGroupMapping, common.baseMixin):
 
 class localAdAccountMixin(object):
     @classmethod
-    def set_defaults(cls, self):
-        self.o = 'VPAC'
-
-    @classmethod
-    def prepare_for_save(cls, self, using):
-        if self.uid != None:
-            if self.cn is None:
-                self.cn = self.uid
-            self.mail = '%s@vpac.org' % self.uid
-        self.secondary_groups.add(ad_group.objects.using(using).get(cn="vpac"))
-        self.secondary_groups.add(ad_group.objects.using(using).get(cn="Domain Users"))
+    def pre_save(cls, self, created, using):
+        # only add groups on the first save when creating object
+        if created:
+            self.secondary_groups.add(ad_group.objects.using(using).get(cn="vpac"))
+            self.secondary_groups.add(ad_group.objects.using(using).get(cn="Domain Users"))
 
 
 class ad_account(
         ad.person, rfc.organizationalPerson, rfc.inetOrgPerson, ad.user,
         ad.posixAccount,
         common.baseMixin):
-    mixin_list = [ common.personMixin, common.accountMixin, adUserMixin, localAdAccountMixin ]
+    mixin_list = [ common.personMixin, common.accountMixin, adUserMixin, localAccountMixin, localAdAccountMixin ]
 
     class Meta:
         base_dn_setting = "LDAP_ACCOUNT_BASE"
