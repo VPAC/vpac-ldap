@@ -33,12 +33,13 @@ class localRfcAccountMixin(object):
         self.o = 'VPAC'
 
     @classmethod
-    def prepare_for_save(cls, self):
-        if self.cn is None:
-            self.cn = '%s %s' % (self.givenName, self.sn)
-        self.mail = '%s@vpac.org' % self.uid
-        self.secondary_groups.add(rfc_group.objects.get(cn="vpac"))
-        self.secondary_groups.add(rfc_group.objects.get(cn="Domain Users"))
+    def prepare_for_save(cls, self, using):
+        if self.uid != None:
+            if self.cn is None:
+                self.cn = '%s %s' % (self.givenName, self.sn)
+            self.mail = '%s@vpac.org' % self.uid
+        self.secondary_groups.add(rfc_group.objects.using(using).get(cn="vpac"))
+        self.secondary_groups.add(rfc_group.objects.using(using).get(cn="Domain Users"))
 
 
 class rfc_account(
@@ -60,7 +61,7 @@ class rfc_account(
     unixHomeDirectory = tldap.manager.AliasDescriptor("homeDirectory")
 
 
-class rfc_group(rfc.posixGroup, common.baseMixin):
+class rfc_group(rfc.posixGroup, samba.sambaGroupMapping, common.baseMixin):
     mixin_list = [ common.groupMixin ]
 
     class Meta:
@@ -83,12 +84,13 @@ class localAdAccountMixin(object):
         self.o = 'VPAC'
 
     @classmethod
-    def prepare_for_save(cls, self):
-        if self.cn is None:
-            self.cn = self.uid
-        self.mail = '%s@vpac.org' % self.uid
-        self.secondary_groups.add(ad_group.objects.get(cn="vpac"))
-        self.secondary_groups.add(group.objects.get(cn="Domain Users"))
+    def prepare_for_save(cls, self, using):
+        if self.uid != None:
+            if self.cn is None:
+                self.cn = self.uid
+            self.mail = '%s@vpac.org' % self.uid
+        self.secondary_groups.add(ad_group.objects.using(using).get(cn="vpac"))
+#        self.secondary_groups.add(ad_group.objects.using(using).get(cn="Domain Users"))
 
 
 class ad_account(
