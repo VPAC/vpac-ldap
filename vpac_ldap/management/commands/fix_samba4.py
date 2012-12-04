@@ -39,6 +39,14 @@ class Command(BaseCommand):
             adaccount.givenName = account.givenName
             adaccount.sn = account.sn
             adaccount.title = account.title
+            adaccount.jpegPhoto = account.jpegPhoto
+            adaccount.telephoneNumber = account.telephoneNumber
+            adaccount.mobile = account.mobile
+            adaccount.facsimileTelephoneNumber = account.facsimileTelephoneNumber
+            if account.description is not None:
+                adaccount.description = account.description[0:1024]
+            else:
+                adaccount.description = None
             adaccount.primary_group = vpac_ldap.schemas.ad_group.objects.using("ad").get(pk=account.primary_group.get_obj().pk)
             adaccount.gidNumber = None
             adaccount.save()
