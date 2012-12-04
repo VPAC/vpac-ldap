@@ -36,6 +36,11 @@ class Command(BaseCommand):
                 print adaccount.pk, adaccount.uidNumber
 
             adaccount.uid = account.uid
+            adaccount.givenName = account.givenName
+            adaccount.sn = account.sn
+            adaccount.title = account.title
+            adaccount.primary_group = vpac_ldap.schemas.ad_group.objects.using("ad").get(pk=account.primary_group.get_obj().pk)
+            adaccount.gidNumber = None
             adaccount.save()
 
         for group in vpac_ldap.schemas.rfc_group.objects.all():
