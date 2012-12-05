@@ -28,38 +28,38 @@ class Command(BaseCommand):
         verbose = int(options.get('verbosity'))
 
         for account in vpac_ldap.schemas.rfc_account.objects.all():
-            adaccount = vpac_ldap.schemas.ad_account.objects.using("ad").get(pk=account.pk)
+            ad_account = vpac_ldap.schemas.ad_account.objects.using("ad").get(pk=account.pk)
 
             if verbose:
                 print
                 print account.pk, account.uidNumber
-                print adaccount.pk, adaccount.uidNumber
+                print ad_account.pk, ad_account.uidNumber
 
-            adaccount.uid = account.uid
-            adaccount.givenName = account.givenName
-            adaccount.sn = account.sn
-            adaccount.title = account.title
-            adaccount.jpegPhoto = account.jpegPhoto
-            adaccount.telephoneNumber = account.telephoneNumber
-            adaccount.mobile = account.mobile
-            adaccount.facsimileTelephoneNumber = account.facsimileTelephoneNumber
+            ad_account.uid = account.uid
+            ad_account.givenName = account.givenName
+            ad_account.sn = account.sn
+            ad_account.title = account.title
+            ad_account.jpegPhoto = account.jpegPhoto
+            ad_account.telephoneNumber = account.telephoneNumber
+            ad_account.mobile = account.mobile
+            ad_account.facsimileTelephoneNumber = account.facsimileTelephoneNumber
             if account.description is not None:
-                adaccount.description = account.description[0:1024]
+                ad_account.description = account.description[0:1024]
             else:
-                adaccount.description = None
-            adaccount.primary_group = vpac_ldap.schemas.ad_group.objects.using("ad").get(pk=account.primary_group.get_obj().pk)
-            adaccount.gidNumber = None
-            adaccount.save()
+                ad_account.description = None
+            ad_account.primary_group = vpac_ldap.schemas.ad_group.objects.using("ad").get(pk=account.primary_group.get_obj().pk)
+            ad_account.gidNumber = None
+            ad_account.save()
 
         for group in vpac_ldap.schemas.rfc_group.objects.all():
-            adgroup = vpac_ldap.schemas.ad_group.objects.using("ad").get(gidNumber=group.gidNumber)
+            ad_group = vpac_ldap.schemas.ad_group.objects.using("ad").get(gidNumber=group.gidNumber)
 
             if verbose:
                 print
                 print group.pk, group.gidNumber
-                print adgroup.pk, adgroup.gidNumber
+                print ad_group.pk, ad_group.gidNumber
 
-            if group.pk != adgroup.pk:
+            if group.pk != ad_group.pk:
                 if verbose:
-                    print "renaming '%s' to '%s'"%(adgroup.pk,group.pk)
-                    adgroup.rename(pk=group.pk)
+                    print "renaming '%s' to '%s'"%(ad_group.pk,group.pk)
+                    ad_group.rename(pk=group.pk)
