@@ -51,6 +51,13 @@ class Command(BaseCommand):
             ad_account.gidNumber = None
             ad_account.save()
 
+            for group in account.secondary_groups.all():
+                ad_group = vpac_ldap.schemas.ad_group.objects.using("ad").get(pk=group.pk)
+                if verbose:
+                    print "--- ", group.pk, group.gidNumber
+                    print "--- ", ad_group.pk, ad_group.gidNumber
+                ad_account.secondary_groups.add(ad_group)
+
         for group in vpac_ldap.schemas.rfc_group.objects.all():
             ad_group = vpac_ldap.schemas.ad_group.objects.using("ad").get(gidNumber=group.gidNumber)
 
