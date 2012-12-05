@@ -65,7 +65,7 @@ class rfc_account(
         eduroam.eduPerson, eduroam.auEduPerson,
         other.ldapPublicKey,
         common.baseMixin):
-    mixin_list = [ common.personMixin, pwdPolicyMixin, common.accountMixin, sambaAccountMixin, shibbolethMixin, localAccountMixin, localRfcAccountMixin, ]
+    mixin_list = [ common.personMixin, pwdPolicyMixin, common.accountMixin, common.shadowMixin, sambaAccountMixin, shibbolethMixin, localAccountMixin, localRfcAccountMixin, ]
 
     class Meta:
         base_dn_setting = "LDAP_ACCOUNT_BASE"
