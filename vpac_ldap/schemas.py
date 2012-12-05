@@ -44,6 +44,14 @@ class localAccountMixin(object):
 
 class localRfcAccountMixin(object):
     @classmethod
+    def set_defaults(cls, self):
+        self.shadowInactive = 10
+        self.shadowLastChange = 13600
+        self.shadowMax = 365
+        self.shadowMin = 1
+        self.shadowWarning = 10
+
+    @classmethod
     def pre_save(cls, self, created, using):
         # only add groups on the first save when creating object
         if created:
