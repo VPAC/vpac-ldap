@@ -71,7 +71,7 @@ class rfc_account(
 
 
 class rfc_group(rfc.posixGroup, samba.sambaGroupMapping, common.baseMixin):
-    mixin_list = [ common.groupMixin ]
+    mixin_list = [ common.groupMixin, sambaGroupMixin ]
 
     class Meta:
         base_dn_setting = "LDAP_GROUP_BASE"
