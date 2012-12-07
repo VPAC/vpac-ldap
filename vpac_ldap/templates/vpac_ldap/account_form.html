@@ -4,7 +4,7 @@
 {% block form-fields %}
 {% load placard_tags %}
 {{ form.non_field_errors }}
-{% if not account %}
+{% if created %}
 {% formfield form.uid %}
 {% formfield form.force %}
 {% formfield form.raw_password %}
