@@ -51,7 +51,7 @@ urlpatterns = patterns('',
     url(r'^users/(?P<account>[-.\w\$]+)/unlock/$', vpac_ldap.views.AccountUnlock.as_view(), name='plac_account_unlock'),
     url(r'^users/', include(placard.account_urls)),
 
-    url(r'^groups/add/$', views.GroupEdit.as_view(), name='plac_account_add'),
+    url(r'^groups/add/$', views.GroupEdit.as_view(), name='plac_group_add'),
     url(r'^groups/(?P<group>[-.\w ]+)/$', vpac_ldap.views.GroupDetail.as_view(), name='plac_group_detail'),
     url(r'^groups/(?P<group>[-.\w ]+)/logs/$', placard.logging.views.LogView.as_view(), name='plac_group_log'),
     url(r'^groups/', include(placard.group_urls)),
