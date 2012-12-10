@@ -30,10 +30,6 @@ class AccountList(placard.views.AccountList):
         qs = super(AccountList, self).get_queryset()
         return qs.filter(eduPersonAffiliation='staff')
 
-    def get_queryset(self):
-        qs = super(AccountList, self).get_queryset()
-        return qs.filter(eduPersonAffiliation='staff')
-
 class PdfAccountList(placard.reports.PdfAccountList):
     def get_queryset(self):
         qs = super(PdfAccountList, self).get_queryset()
