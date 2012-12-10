@@ -31,10 +31,8 @@ class localAccountMixin(object):
         self.o = 'VPAC'
 
     @classmethod
-    def pre_save(cls, self, created, using):
+    def pre_save(cls, self):
         if self.uid != None:
-            if self.cn is None:
-                self.cn = '%s %s' % (self.givenName, self.sn)
             self.mail = '%s@vpac.org' % self.uid
 
 
@@ -44,11 +42,10 @@ class localAccountMixin(object):
 
 class localRfcAccountMixin(object):
     @classmethod
-    def pre_save(cls, self, created, using):
-        # only add groups on the first save when creating object
-        if created:
-            self.secondary_groups.add(rfc_group.objects.using(using).get(cn="vpac"))
-            self.secondary_groups.add(rfc_group.objects.using(using).get(cn="Domain Users"))
+    def post_create(cls, self, master):
+        using = self._alias
+        self.secondary_groups.add(rfc_group.objects.using(using).get(cn="vpac"))
+        self.secondary_groups.add(rfc_group.objects.using(using).get(cn="Domain Users"))
 
 
 class rfc_account(
@@ -89,11 +86,11 @@ class rfc_group(rfc.posixGroup, samba.sambaGroupMapping, common.baseMixin):
 
 class localAdAccountMixin(object):
     @classmethod
-    def pre_save(cls, self, created, using):
-        # only add groups on the first save when creating object
-        if created:
-            self.secondary_groups.add(ad_group.objects.using(using).get(cn="vpac"))
-            self.secondary_groups.add(ad_group.objects.using(using).get(cn="Domain Users"))
+    def post_create(cls, self, master):
+        using = self._alias
+        self.secondary_groups.add(ad_group.objects.using(using).get(cn="vpac"))
+        # this happens automagically by the ad server
+        # self.secondary_groups.add(ad_group.objects.using(using).get(cn="Domain Users"))
 
 
 class ad_account(
