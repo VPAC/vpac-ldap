@@ -70,3 +70,6 @@ class Command(BaseCommand):
                 if verbose:
                     print "renaming '%s' to '%s'"%(ad_group.pk,group.pk)
                     ad_group.rename(pk=group.pk)
+
+            ad_group.displayName = group.displayName
+            ad_group.save()
