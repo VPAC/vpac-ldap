@@ -35,6 +35,13 @@ class localAccountMixin(object):
         if self.uid != None:
             self.mail = '%s@vpac.org' % self.uid
 
+    @classmethod
+    def lock(cls, self):
+        self.secondary_groups.clear()
+
+    @classmethod
+    def unlock(cls, self):
+        pass
 
 #######
 # rfc #
