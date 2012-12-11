@@ -22,7 +22,7 @@ import tldap
 
 class AccountList(placard.views.AccountList):
     def get_queryset_old(self):
-        group = placard.models.group.objects.get(cn="vpac")
+        group = placard.ldap_models.group.objects.get(cn="vpac")
         qs = super(AccountList, self).get_queryset()
         return qs.filter(tldap.Q(primary_group=group) | tldap.Q(secondary_groups=group))
 
