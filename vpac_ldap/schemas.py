@@ -36,10 +36,6 @@ class localAccountMixin(object):
             self.mail = '%s@vpac.org' % self.uid
 
     @classmethod
-    def lock(cls, self):
-        self.secondary_groups.clear()
-
-    @classmethod
     def unlock(cls, self):
         pass
 
@@ -54,6 +50,11 @@ class localRfcAccountMixin(object):
         self.secondary_groups.add(rfc_group.objects.using(using).get(cn="vpac"))
         self.secondary_groups.add(rfc_group.objects.using(using).get(cn="Domain Users"))
 
+    @classmethod
+    def lock(cls, self):
+        using = self._alias
+        self.primary_group = rfc_group.objects.using(using).get(cn="visitor")
+        self.secondary_groups.clear()
 
 class rfc_account(
         rfc.person, rfc.organizationalPerson, rfc.inetOrgPerson, rfc.pwdPolicy,
@@ -98,6 +99,12 @@ class localAdAccountMixin(object):
         self.secondary_groups.add(ad_group.objects.using(using).get(cn="vpac"))
         # this happens automagically by the ad server
         # self.secondary_groups.add(ad_group.objects.using(using).get(cn="Domain Users"))
+
+    @classmethod
+    def lock(cls, self):
+        using = self._alias
+        self.primary_group = ad_group.objects.using(using).get(cn="visitor")
+        self.secondary_groups.clear()
 
 
 class ad_account(
