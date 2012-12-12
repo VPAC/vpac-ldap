@@ -126,5 +126,5 @@ class ad_group(rfc.posixGroup, ad.group, common.baseMixin):
         pk = 'cn'
 
     # accounts
-    primary_accounts = tldap.manager.AdPrimaryAccountLinkDescriptor(linked_cls=ad_account, related_name="primary_group", domain_sid=django.conf.settings.AD_DOMAIN_SID)
+    primary_accounts = tldap.manager.OneToManyDescriptor(this_key='gidNumber', linked_cls=ad_account, linked_key='gidNumber', related_name="primary_group")
     secondary_accounts = tldap.manager.AdAccountLinkDescriptor(linked_cls=ad_account, related_name="secondary_groups")

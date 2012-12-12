@@ -48,7 +48,6 @@ class Command(BaseCommand):
             else:
                 ad_account.description = None
             ad_account.primary_group = vpac_ldap.schemas.ad_group.objects.using("ad").get(pk=account.primary_group.get_obj().pk)
-            ad_account.gidNumber = None
             ad_account.save()
 
             for group in account.secondary_groups.all():
