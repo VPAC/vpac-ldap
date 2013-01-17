@@ -16,8 +16,9 @@
 # You should have received a copy of the GNU General Public License
 # along with django-placard  If not, see <http://www.gnu.org/licenses/>.
 
-from django.core.management import execute_manager
-import vpac_ldap.local_settings as settings
+import os
+from django.core import management
 
+os.environ['DJANGO_SETTINGS_MODULE'] = 'vpac_ldap.local_settings'
 if __name__ == "__main__":
-    execute_manager(settings)
+    management.execute_from_command_line()

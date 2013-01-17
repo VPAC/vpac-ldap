@@ -1,5 +1,6 @@
 {% extends "placard/group_detail.html" %}
+{% load url from future %}
 
 {% block object-tools-view %}
-<li><a href="{% url plac_group_log group.cn %}">History</a></li>
+<li><a href="{% url "plac_group_log" group.cn %}">History</a></li>
 {% endblock %}

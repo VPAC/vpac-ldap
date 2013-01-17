@@ -1,5 +1,6 @@
 {% extends "placard/account_detail.html" %}
+{% load url from future %}
 
 {% block object-tools-view %}
-<li><a href="{% url plac_account_log account.uid %}">History</a></li>
+<li><a href="{% url "plac_account_log" account.uid %}">History</a></li>
 {% endblock %}

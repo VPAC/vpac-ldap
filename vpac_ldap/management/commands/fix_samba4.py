@@ -43,6 +43,9 @@ class Command(BaseCommand):
             ad_account.telephoneNumber = account.telephoneNumber
             ad_account.mobile = account.mobile
             ad_account.facsimileTelephoneNumber = account.facsimileTelephoneNumber
+            if account.description is not None and len(account.description) > 1024:
+                print "description toooooooooo long"
+
             if account.description is not None:
                 ad_account.description = account.description[0:1024]
             else:
