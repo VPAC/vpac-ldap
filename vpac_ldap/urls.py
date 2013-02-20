@@ -35,7 +35,7 @@ urlpatterns = patterns('',
     url(r'^lookup/', include(ajax_select.urls)),
 
     url(r'^search/$', views.search, name='plac_search'),
-    url(r'^change_password/$', views.UserChangePassword.as_view(), name='plac_account_password'),
+    url(r'^password/$', views.ChangePassword.as_view(), name='plac_password'),
 
     url(r'^logs/$', placard.logging.views.LogView.as_view(), name='plac_log'),
     url(r'^logs/(?P<user>[-.\w]+)/$', placard.logging.views.LogView.as_view(), name='plac_log_user'),
