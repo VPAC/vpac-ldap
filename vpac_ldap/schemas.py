@@ -23,8 +23,6 @@ from placard.schemas.samba import sambaAccountMixin, sambaGroupMixin
 from placard.schemas.shibboleth import shibbolethMixin
 import tldap.manager
 
-import django.conf
-
 class localAccountMixin(object):
     @classmethod
     def set_defaults(cls, self):
