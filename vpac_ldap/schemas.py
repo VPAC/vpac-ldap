@@ -106,8 +106,8 @@ class localAdAccountMixin(object):
 
 
 class ad_account(
-        rfc.person, rfc.organizationalPerson, rfc.inetOrgPerson, ad.user,
-        rfc.posixAccount,
+        ad.person, rfc.organizationalPerson, rfc.inetOrgPerson, ad.user,
+        ad.posixAccount,
         common.baseMixin):
     mixin_list = [ common.personMixin, common.accountMixin, adUserMixin, localAccountMixin, localAdAccountMixin ]
 
