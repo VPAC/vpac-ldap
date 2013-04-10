@@ -54,12 +54,12 @@ class localRfcAccountMixin(object):
         self.primary_group = rfc_group.objects.using(using).get(cn="visitor")
         self.secondary_groups.clear()
 
-class rfc_account(
+class rfc_account(common.baseMixin):
+    schema_list = [
         rfc.person, rfc.organizationalPerson, rfc.inetOrgPerson, rfc.pwdPolicy,
         rfc.posixAccount, rfc.shadowAccount, samba.sambaSamAccount,
         eduroam.eduPerson, eduroam.auEduPerson,
-        other.ldapPublicKey,
-        common.baseMixin):
+        other.ldapPublicKey, ]
     mixin_list = [ common.personMixin, pwdPolicyMixin, common.accountMixin, common.shadowMixin, sambaAccountMixin, shibbolethMixin, localAccountMixin, localRfcAccountMixin, ]
 
     class Meta:
@@ -73,7 +73,8 @@ class rfc_account(
     unixHomeDirectory = tldap.manager.AliasDescriptor("homeDirectory")
 
 
-class rfc_group(rfc.posixGroup, samba.sambaGroupMapping, common.baseMixin):
+class rfc_group(common.baseMixin):
+    schema_list = [ rfc.posixGroup, samba.sambaGroupMapping, ]
     mixin_list = [ common.groupMixin, sambaGroupMixin ]
 
     class Meta:
@@ -105,10 +106,8 @@ class localAdAccountMixin(object):
         self.secondary_groups.clear()
 
 
-class ad_account(
-        ad.person, rfc.organizationalPerson, rfc.inetOrgPerson, ad.user,
-        ad.posixAccount,
-        common.baseMixin):
+class ad_account(common.baseMixin):
+    schema_list = [ ad.person, rfc.organizationalPerson, rfc.inetOrgPerson, ad.user, ad.posixAccount, ]
     mixin_list = [ common.personMixin, common.accountMixin, adUserMixin, localAccountMixin, localAdAccountMixin ]
 
     class Meta:
@@ -121,7 +120,8 @@ class ad_account(
     manager_of = tldap.manager.OneToManyDescriptor(this_key='dn', linked_cls='vpac_ldap.schemas.ad_account', linked_key='manager')
 
 
-class ad_group(rfc.posixGroup, ad.group, common.baseMixin):
+class ad_group(common.baseMixin):
+    schema_list = [ rfc.posixGroup, ad.group, ]
     mixin_list = [ common.groupMixin, adGroupMixin ]
 
     class Meta:
