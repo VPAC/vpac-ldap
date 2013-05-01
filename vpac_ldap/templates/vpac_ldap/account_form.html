@@ -12,8 +12,8 @@
 {% formfield form.raw_password2 %}
 {% endif %}
 {% inlineformfield form.givenName form.sn %}
-{% formfield form.eduPersonAffiliation %}
-{% formfield form.primary_group %}
+{% if form.eduPersonAffiliation %}{% formfield form.eduPersonAffiliation %}{% endif %}
+{% if form.primary_group %}{% formfield form.primary_group %}{% endif %}
 {% formfield form.title %}
 {% formfield form.description %}
 
@@ -22,6 +22,6 @@
 {% formfield form.managed_by %}
 {% formfield form.l %}
 {% formfield form.jpegPhoto %}
-{% formfield form.sshPublicKey %}
-{% formfield form.loginShell %}
+{% if form.sshPublicKey %}{% formfield form.sshPublicKey %}{% endif %}
+{% if form.loginShell %}{% formfield form.loginShell %}{% endif %}
 {% endblock %}
