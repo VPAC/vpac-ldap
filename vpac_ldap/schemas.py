@@ -16,11 +16,12 @@
 # along with django-placard  If not, see <http://www.gnu.org/licenses/>.
 
 from tldap.schemas import rfc, ad, samba, eduroam, other
-from placard.schemas import common
-from placard.schemas.pwdpolicy import pwdPolicyMixin
-from placard.schemas.ad import adUserMixin, adGroupMixin
-from placard.schemas.samba import sambaAccountMixin, sambaGroupMixin
-from placard.schemas.shibboleth import shibbolethMixin
+import tldap.methods as base
+import tldap.methods.common as common
+import tldap.methods.pwdpolicy as pwdpolicy
+import tldap.methods.ad as mad
+import tldap.methods.samba as msamba
+import tldap.methods.shibboleth as shibboleth
 import tldap.manager
 
 class localAccountMixin(object):
@@ -54,13 +55,13 @@ class localRfcAccountMixin(object):
         self.primary_group = rfc_group.objects.using(using).get(cn="visitor")
         self.secondary_groups.clear()
 
-class rfc_account(common.baseMixin):
+class rfc_account(base.baseMixin):
     schema_list = [
         rfc.person, rfc.organizationalPerson, rfc.inetOrgPerson, rfc.pwdPolicy,
         rfc.posixAccount, rfc.shadowAccount, samba.sambaSamAccount,
         eduroam.eduPerson, eduroam.auEduPerson,
         other.ldapPublicKey, ]
-    mixin_list = [ common.personMixin, pwdPolicyMixin, common.accountMixin, common.shadowMixin, sambaAccountMixin, shibbolethMixin, localAccountMixin, localRfcAccountMixin, ]
+    mixin_list = [ common.personMixin, pwdpolicy.pwdPolicyMixin, common.accountMixin, common.shadowMixin, msamba.sambaAccountMixin, shibboleth.shibbolethMixin, localAccountMixin, localRfcAccountMixin, ]
 
     class Meta:
         base_dn_setting = "LDAP_ACCOUNT_BASE"
@@ -73,9 +74,9 @@ class rfc_account(common.baseMixin):
     unixHomeDirectory = tldap.manager.AliasDescriptor("homeDirectory")
 
 
-class rfc_group(common.baseMixin):
+class rfc_group(base.baseMixin):
     schema_list = [ rfc.posixGroup, samba.sambaGroupMapping, ]
-    mixin_list = [ common.groupMixin, sambaGroupMixin ]
+    mixin_list = [ common.groupMixin, msamba.sambaGroupMixin ]
 
     class Meta:
         base_dn_setting = "LDAP_GROUP_BASE"
@@ -106,9 +107,9 @@ class localAdAccountMixin(object):
         self.secondary_groups.clear()
 
 
-class ad_account(common.baseMixin):
+class ad_account(base.baseMixin):
     schema_list = [ ad.person, rfc.organizationalPerson, rfc.inetOrgPerson, ad.user, ad.posixAccount, ]
-    mixin_list = [ common.personMixin, common.accountMixin, adUserMixin, localAccountMixin, localAdAccountMixin ]
+    mixin_list = [ common.personMixin, common.accountMixin, mad.adUserMixin, localAccountMixin, localAdAccountMixin ]
 
     class Meta:
         base_dn_setting = "LDAP_ACCOUNT_BASE"
@@ -120,9 +121,9 @@ class ad_account(common.baseMixin):
     manager_of = tldap.manager.OneToManyDescriptor(this_key='dn', linked_cls='vpac_ldap.schemas.ad_account', linked_key='manager')
 
 
-class ad_group(common.baseMixin):
+class ad_group(base.baseMixin):
     schema_list = [ rfc.posixGroup, ad.group, ]
-    mixin_list = [ common.groupMixin, adGroupMixin ]
+    mixin_list = [ common.groupMixin, mad.adGroupMixin ]
 
     class Meta:
         base_dn_setting = "LDAP_GROUP_BASE"

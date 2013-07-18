@@ -34,6 +34,7 @@ PLACARD_MODELS = 'vpac_ldap.models'
 
 INSTALLED_APPS = (
     'south',
+    'tldap.methods',
     'placard.logging',
     'vpac_ldap',
 ) + INSTALLED_APPS
