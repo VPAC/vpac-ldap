@@ -30,7 +30,6 @@ DEBUG=True
 TEMPLATE_DEBUG = DEBUG
 
 ROOT_URLCONF = 'vpac_ldap.urls'
-PLACARD_MODELS = 'vpac_ldap.models'
 
 INSTALLED_APPS = (
     'south',
