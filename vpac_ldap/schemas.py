@@ -30,11 +30,6 @@ class localAccountMixin(object):
         self.o = 'VPAC'
 
     @classmethod
-    def pre_save(cls, self, using):
-        if self.uid != None:
-            self.mail = '%s@vpac.org' % self.uid
-
-    @classmethod
     def unlock(cls, self):
         pass
 
