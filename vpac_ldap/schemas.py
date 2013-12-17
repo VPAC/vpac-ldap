@@ -30,7 +30,7 @@ class localAccountMixin(object):
         self.o = 'VPAC'
 
     @classmethod
-    def pre_save(cls, self):
+    def pre_save(cls, self, using):
         if self.uid != None:
             self.mail = '%s@vpac.org' % self.uid
 
@@ -44,8 +44,7 @@ class localAccountMixin(object):
 
 class localRfcAccountMixin(object):
     @classmethod
-    def post_create(cls, self, master):
-        using = self._alias
+    def post_add(cls, self, using):
         self.secondary_groups.add(rfc_group.objects.using(using).get(cn="vpac"))
         self.secondary_groups.add(rfc_group.objects.using(using).get(cn="Domain Users"))
 
@@ -94,8 +93,7 @@ class rfc_group(base.baseMixin):
 
 class localAdAccountMixin(object):
     @classmethod
-    def post_create(cls, self, master):
-        using = self._alias
+    def post_add(cls, self, using):
         self.secondary_groups.add(ad_group.objects.using(using).get(cn="vpac"))
         # this happens automagically by the ad server
         # self.secondary_groups.add(ad_group.objects.using(using).get(cn="Domain Users"))
