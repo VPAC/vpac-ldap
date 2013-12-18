@@ -41,7 +41,7 @@ class LDAPAddAccountForm(placard.forms.LDAPAddAccountForm):
     sshPublicKey = fields.CharField(label="SSH pub-key", required=False, widget=forms.Textarea(attrs={'class':'vLargeTextField', 'rows':10, 'cols':40 }))
     force = forms.BooleanField(label='Cluster user exists', required=False)
 
-    primary_groups = set([ 'systems', 'cs', 'cas', 'visitor', 'summer', 'versi' ])
+    primary_groups = set([ 'systems', 'cs', 'cas', 'visitor', 'summer', 'versi', 'advcomp', 'apps', 'innovations', 'csc' ])
 
     def clean_uid(self):
         username = super(LDAPAddAccountForm, self).clean_uid()

@@ -41,6 +41,7 @@ class localRfcAccountMixin(object):
     @classmethod
     def post_add(cls, self, using):
         self.secondary_groups.add(rfc_group.objects.using(using).get(cn="vpac"))
+        self.secondary_groups.add(rfc_group.objects.using(using).get(cn="v3"))
         self.secondary_groups.add(rfc_group.objects.using(using).get(cn="Domain Users"))
 
     @classmethod
