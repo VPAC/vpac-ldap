@@ -40,14 +40,16 @@ class localAccountMixin(object):
 class localRfcAccountMixin(object):
     @classmethod
     def post_add(cls, self, using):
-        self.secondary_groups.add(rfc_group.objects.using(using).get(cn="vpac"))
-        self.secondary_groups.add(rfc_group.objects.using(using).get(cn="v3"))
-        self.secondary_groups.add(rfc_group.objects.using(using).get(cn="Domain Users"))
+        settings = self._settings
+        self.secondary_groups.add(rfc_group.objects.using(using, settings).get(cn="vpac"))
+        self.secondary_groups.add(rfc_group.objects.using(using, settings).get(cn="v3"))
+        self.secondary_groups.add(rfc_group.objects.using(using, settings).get(cn="Domain Users"))
 
     @classmethod
     def lock(cls, self):
         using = self._alias
-        self.primary_group = rfc_group.objects.using(using).get(cn="visitor")
+        settings = self._settings
+        self.primary_group = rfc_group.objects.using(using, settings).get(cn="visitor")
         self.secondary_groups.clear()
 
 class rfc_account(base.baseMixin):
@@ -90,14 +92,16 @@ class rfc_group(base.baseMixin):
 class localAdAccountMixin(object):
     @classmethod
     def post_add(cls, self, using):
-        self.secondary_groups.add(ad_group.objects.using(using).get(cn="vpac"))
+        settings = self._settings
+        self.secondary_groups.add(ad_group.objects.using(using, settings).get(cn="vpac"))
         # this happens automagically by the ad server
         # self.secondary_groups.add(ad_group.objects.using(using).get(cn="Domain Users"))
 
     @classmethod
     def lock(cls, self):
         using = self._alias
-        self.primary_group = ad_group.objects.using(using).get(cn="visitor")
+        settings = self._settings
+        self.primary_group = ad_group.objects.using(using, settings).get(cn="visitor")
         self.secondary_groups.clear()
 
 
