@@ -43,10 +43,11 @@ class LDAPAddAccountForm(placard.forms.LDAPAddAccountForm):
 
     primary_groups = set([ 'systems', 'cs', 'cas', 'visitor', 'summer', 'versi', 'advcomp', 'apps', 'innovations', 'csc' ])
 
-    def clean_uid(self):
-        username = super(LDAPAddAccountForm, self).clean_uid()
+    def clean(self):
+        data = super(LDAPAddAccountForm, self).clean()
+        username = data['uid']
 
-        if 'force' not in self.cleaned_data:
+        if not data['force']:
             import xmlrpclib
             login = django.conf.settings.CLUSTER_USER
             password = django.conf.settings.CLUSTER_PASSWORD
@@ -55,6 +56,6 @@ class LDAPAddAccountForm(placard.forms.LDAPAddAccountForm):
             if server.username_exists(login, password, username):
                 raise forms.ValidationError(u'Username exists on clusters')
 
-        return username
+        return data
 
 
